@@ -4,7 +4,7 @@ from logging.handlers import RotatingFileHandler
 
 from flask import Flask, logging
 from app.config import Config
-from app.extensions import db, migrate, jwt
+from app.extensions import db, migrate, jwt, socketIO
 from services.SecurityService import SecurityService
 from flask_jwt import JWT
 from app.encoder import Encoder
@@ -14,6 +14,7 @@ from app.encoder import Encoder
 def register_extensions(app):
     db.init_app(app)
     migrate.init_app(app, db)
+    socketIO.init_app(app)
 
 
 def create_app(config_object=Config):
@@ -35,4 +36,4 @@ from app import models
 # import needed for making the routes accessible
 from controllers import UserController, EventController
 
-app.run(port=os.environ.get('PORT'))
+socketIO.run(app=app, port=os.environ.get('PORT'))

@@ -2,11 +2,11 @@ from flask import request, jsonify
 from flask_api import status
 from flask_jwt import jwt_required
 
-from app import flask_app
+from app import app
 from services.EventService import EventService
 
 
-@flask_app.route('/event/', methods=['POST'])
+@app.route('/event/', methods=['POST'])
 @jwt_required()
 def add_event_endpoint():
     payload = request.get_json()
@@ -18,7 +18,7 @@ def add_event_endpoint():
         return jsonify(event), status.HTTP_200_OK
 
 
-@flask_app.route('/event/<int:event_id>/', methods=['GET', 'PUT', 'DELETE'])
+@app.route('/event/<int:event_id>/', methods=['GET', 'PUT', 'DELETE'])
 @jwt_required()
 def event_endpoint(event_id):
     if request.method == 'GET':
@@ -44,14 +44,14 @@ def event_endpoint(event_id):
             return 'Deleted', status.HTTP_200_OK
 
 
-@flask_app.route('/event/available_events/<int:user_id>/', methods=['GET'])
+@app.route('/event/available_events/<int:user_id>/', methods=['GET'])
 @jwt_required()
 def user_available_events_endpoint(user_id):
     payload = request.get_json()
     return EventService.get_available_events(user_id, payload['longitude'], payload['latitude'])
 
 
-@flask_app.route('/event/user/<int:user_id>/', methods=['GET', 'POST', 'DELETE'])
+@app.route('/event/user/<int:user_id>/', methods=['GET', 'POST', 'DELETE'])
 @jwt_required()
 def user_event_endpoint(user_id):
     if request.method == 'GET':
@@ -72,7 +72,7 @@ def user_event_endpoint(user_id):
             return jsonify(EventService.get_user_events(user_id)), status.HTTP_200_OK
 
 
-@flask_app.route('/event/<int:event_id>/messages/', methods=['GET'])
+@app.route('/event/<int:event_id>/messages/', methods=['GET'])
 @jwt_required()
 def event_messages_endpoint(event_id):
     return EventService.get_event_messages(event_id)

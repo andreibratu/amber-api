@@ -2,16 +2,16 @@ from flask import request, jsonify
 from flask_api import status
 from flask_jwt import jwt_required
 
-from app import flask_app
+from app import app
 from services.UserService import UserService
 
 
-@flask_app.route('/', methods=['GET'])
+@app.route('/', methods=['GET'])
 def hello():
     return 'Hi there cutie'
 
 
-@flask_app.route('/user/', methods=['POST'])
+@app.route('/user/', methods=['POST'])
 def register_user():
     payload = request.get_json()
     user = UserService.register_user(email=payload['email'], password=payload['password'])
@@ -21,7 +21,7 @@ def register_user():
         return jsonify(user), status.HTTP_200_OK
 
 
-@flask_app.route('/user/<int:user_id>/', methods=['GET', 'PUT'])
+@app.route('/user/<int:user_id>/', methods=['GET', 'PUT'])
 @jwt_required()
 def user_resource(user_id):
     if request.method == 'GET':
