@@ -4,7 +4,7 @@ from logging.handlers import RotatingFileHandler
 
 from flask import Flask, logging
 from app.config import Config
-from app.extensions import db, migrate, jwt, constants
+from app.extensions import db, migrate, jwt
 from services.SecurityService import SecurityService
 from flask_jwt import JWT
 from app.encoder import Encoder
