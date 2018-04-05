@@ -27,12 +27,12 @@ def create_app(config_object=Config):
     return flask_app
 
 
-flask_app = create_app()
-jwt = JWT(app=flask_app, authentication_handler=SecurityService.authenticate, identity_handler=SecurityService.identity)
+app = create_app()
+jwt = JWT(app=app, authentication_handler=SecurityService.authenticate, identity_handler=SecurityService.identity)
 
 # import needed for SQLAlchemy to recognise the models
 from app import models
 # import needed for making the routes accessible
 from controllers import UserController, EventController
 
-flask_app.run(threaded=True)
+app.run(port=os.environ.get('PORT'))
