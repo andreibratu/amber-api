@@ -36,4 +36,4 @@ from app import models
 # import needed for making the routes accessible
 from controllers import UserController, EventController
 
-socketIO.run(app=app, port=os.environ.get('PORT'))
+socketIO.run(app=app, port=os.environ.get('PORT'), host='0.0.0.0')
