@@ -11,7 +11,7 @@ def hello():
     return 'Hi there cutie'
 
 
-@app.route('/user/', methods=['POST'])
+@app.route('/register/', methods=['POST'])
 def register_user():
     payload = request.get_json()
     user = UserService.register_user(email=payload['email'], password=payload['password'])
