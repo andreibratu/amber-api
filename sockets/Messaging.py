@@ -1,22 +1,13 @@
 from flask_socketio import join_room, send, leave_room
-
 from app import socketIO
 
 
 @socketIO.on('join')
 def on_join(data):
     name = data['name']
-    room = data['room']
+    room = data['eventId']
     join_room(room)
-    send(name + ' has joined the event', room=room)
-
-
-@socketIO.on('leave')
-def on_leave(data):
-    name = data['name']
-    room = data['room']
-    leave_room(room)
-    send(name + ' has left the event', room=room)
+    send({"name": name, "eventId": room}, room=room)
 
 
 @socketIO.on('message')
