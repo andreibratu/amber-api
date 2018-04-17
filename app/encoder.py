@@ -22,7 +22,8 @@ class Encoder(JSONEncoder):
                 'start_date': o.start_date.__str__(),
                 'end_date': o.end_date.__str__(),
                 'latitude': o.latitude,
-                'longitude': o.longitude
+                'longitude': o.longitude,
+                'users': o.users
             }
         if isinstance(o, BusyTime):
             return {

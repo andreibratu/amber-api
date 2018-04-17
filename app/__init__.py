@@ -34,6 +34,6 @@ jwt = JWT(app=app, authentication_handler=SecurityService.authenticate, identity
 # import needed for SQLAlchemy to recognise the models
 from app import models
 # import needed for making the routes accessible
-from controllers import UserController, EventController
+from resources import UserResource, EventResource
 
 socketIO.run(app=app, port=os.environ.get('PORT'), host='0.0.0.0')

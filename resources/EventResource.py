@@ -6,73 +6,90 @@ from app import app
 from services.EventService import EventService
 
 
-@app.route('/event/', methods=['POST'])
+@app.route('/event', methods=['POST'], strict_slashes=False)
 @jwt_required()
 def add_event_endpoint():
+
     payload = request.get_json()
     event = EventService.add_event(payload['user_id'], payload['name'], payload['address'], payload['start_date'],
                                    payload['end_date'], payload['latitude'], payload['longitude'])
+
     if not event:
         return 'Time frame taken by other event', status.HTTP_409_CONFLICT
     else:
         return jsonify(event), status.HTTP_200_OK
 
 
-@app.route('/event/<int:event_id>/', methods=['GET', 'PUT', 'DELETE'])
+@app.route('/event', methods=['GET', 'PUT', 'DELETE'], strict_slashes=False)
 @jwt_required()
-def event_endpoint(event_id):
+def event_endpoint():
+
     if request.method == 'GET':
+        event_id = request.args.get('event_id')
         events = EventService.get_event_by_id(event_id)
         if not events:
-            return 'Resource not found', status.HTTP_404_NOT_FOUND
+            return status.HTTP_404_NOT_FOUND
         else:
             return jsonify(events), status.HTTP_200_OK
+
     if request.method == 'PUT':
         payload = request.get_json()
-        event = EventService.update_event(event_id, payload['name'], payload['address'],
+        event = EventService.update_event(payload['event_id'], payload['name'], payload['address'],
                                           payload['start_date'], payload['end_date'],
                                           payload['latitude'], payload['longitude'])
         if not event:
-            return 'Event not found', status.HTTP_404_NOT_FOUND
+            return status.HTTP_404_NOT_FOUND
         else:
             return jsonify(event), status.HTTP_200_OK
+
     if request.method == 'DELETE':
+        event_id = request.args.get('event_id')
         result = EventService.delete_event(event_id)
         if not result:
-            return 'Event not found', status.HTTP_404_NOT_FOUND
+            return status.HTTP_404_NOT_FOUND
         else:
-            return 'Deleted', status.HTTP_200_OK
+            return status.HTTP_200_OK
 
 
-@app.route('/event/available_events/<int:user_id>/', methods=['GET'])
+@app.route('/event/available_events', methods=['GET'], strict_slashes=False)
 @jwt_required()
-def user_available_events_endpoint(user_id):
-    payload = request.get_json()
-    return EventService.get_available_events(user_id, payload['longitude'], payload['latitude'])
+def user_available_events_endpoint():
+
+    user_id = request.args.get('user_id')
+    lng = request.args.get('lng')
+    lat = request.args.get('lat')
+    return EventService.get_available_events(user_id, lng, lat)
 
 
-@app.route('/event/user/<int:user_id>/', methods=['GET', 'POST', 'DELETE'])
+@app.route('/event/user', methods=['GET', 'POST', 'DELETE'], strict_slashes=False)
 @jwt_required()
-def user_event_endpoint(user_id):
+def user_event_endpoint():
+
     if request.method == 'GET':
+        user_id = request.args.get('user_id')
         return jsonify(EventService.get_user_events(user_id)), status.HTTP_200_OK
+
     if request.method == 'POST':
-        event_id = request.get_json()['event_id']
-        result = EventService.add_user_to_event(user_id, event_id)
+        payload = request.get_json()['event_id']
+        result = EventService.add_user_to_event(payload['user_id'], payload['event_id'])
         if result == -1:
-            return "Resource not found", status.HTTP_404_NOT_FOUND
+            return status.HTTP_404_NOT_FOUND
         elif result == -2:
-            return "Time frame taken another event", status.HTTP_409_CONFLICT
+            return status.HTTP_409_CONFLICT
+
     if request.method == 'DELETE':
-        event_id = request.get_json()['event_id']
+        user_id = request.args.get('user_id')
+        event_id = request.args.get('event_id')
         result = EventService.user_abandon_event(user_id, event_id)
         if not result:
-            return 'Resource not found', status.HTTP_404_NOT_FOUND
+            return status.HTTP_404_NOT_FOUND
         else:
             return jsonify(EventService.get_user_events(user_id)), status.HTTP_200_OK
 
 
-@app.route('/event/<int:event_id>/messages/', methods=['GET'])
+@app.route('/event/messages', methods=['GET'], strict_slashes=False)
 @jwt_required()
 def event_messages_endpoint(event_id):
+
+    event_id = request.args.get('event_id')
     return EventService.get_event_messages(event_id)
