@@ -28,7 +28,7 @@ def event_endpoint():
         events = EventService.get_event_by_id(event_id)
 
         if not events:
-            return status.HTTP_404_NOT_FOUND
+            return 'Not found', status.HTTP_404_NOT_FOUND
         else:
             return jsonify(events), status.HTTP_200_OK
 
@@ -39,7 +39,7 @@ def event_endpoint():
                                           payload['start_date'], payload['end_date'],
                                           payload['latitude'], payload['longitude'])
         if not event:
-            return status.HTTP_404_NOT_FOUND
+            return 'Not found', status.HTTP_404_NOT_FOUND
 
         else:
             return jsonify(event), status.HTTP_200_OK
@@ -50,10 +50,10 @@ def event_endpoint():
         result = EventService.delete_event(event_id)
 
         if not result:
-            return status.HTTP_404_NOT_FOUND
+            return 'Not found', status.HTTP_404_NOT_FOUND
 
         else:
-            return status.HTTP_200_OK
+            return 'Deleted', status.HTTP_200_OK
 
 
 @app.route('/event/available_events', methods=['GET'], strict_slashes=False)
@@ -81,10 +81,10 @@ def user_event_endpoint():
         result = EventService.add_user_to_event(payload['user_id'], payload['event_id'])
 
         if result == -1:
-            return status.HTTP_404_NOT_FOUND
+            return 'Not found', status.HTTP_404_NOT_FOUND
 
         elif result == -2:
-            return status.HTTP_409_CONFLICT
+            return 'Time frame taken by another event', status.HTTP_409_CONFLICT
 
     if request.method == 'DELETE':
 
@@ -93,7 +93,7 @@ def user_event_endpoint():
         result = EventService.user_abandon_event(user_id, event_id)
 
         if not result:
-            return status.HTTP_404_NOT_FOUND
+            return 'Not found', status.HTTP_404_NOT_FOUND
 
         else:
             return jsonify(EventService.get_user_events(user_id)), status.HTTP_200_OK
@@ -104,4 +104,4 @@ def user_event_endpoint():
 def event_messages_endpoint(event_id):
 
     event_id = request.args.get('event_id')
-    return EventService.get_event_messages(event_id)
+    return jsonify(EventService.get_event_messages(event_id)), status.HTTP_200_OK
