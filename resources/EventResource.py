@@ -6,24 +6,21 @@ from app import app
 from services.EventService import EventService
 
 
-@app.route('/event', methods=['POST'], strict_slashes=False)
-@jwt_required()
-def add_event_endpoint():
-
-    payload = request.get_json()
-    event = EventService.add_event(payload['user_id'], payload['name'], payload['address'], payload['start_date'],
-                                   payload['end_date'], payload['latitude'], payload['longitude'])
-
-    if not event:
-        return 'Time frame taken by other event', status.HTTP_409_CONFLICT
-
-    else:
-        return jsonify(event), status.HTTP_200_OK
-
-
-@app.route('/event', methods=['GET', 'PUT', 'DELETE'], strict_slashes=False)
+@app.route('/event', methods=['POST', 'GET', 'PUT', 'DELETE'], strict_slashes=False)
 @jwt_required()
 def event_endpoint():
+
+    if request.method == 'POST':
+
+        payload = request.get_json()
+        event = EventService.add_event(payload['user_id'], payload['name'], payload['address'], payload['start_date'],
+                                       payload['end_date'], payload['latitude'], payload['longitude'])
+
+        if not event:
+            return 'Time frame taken by other event', status.HTTP_409_CONFLICT
+
+        else:
+            return jsonify(event), status.HTTP_200_OK
 
     if request.method == 'GET':
 
