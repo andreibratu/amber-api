@@ -110,8 +110,8 @@ class Messages(db.Model):
 class BusyTime(db.Model):
     __tablename__ = 'busytimes'
     id = db.Column(db.Integer, primary_key=True)
-    start_date = db.Column(db.DateTime)
-    end_date = db.Column(db.DateTime)
+    start_date = db.Column(db.TIMESTAMP)
+    end_date = db.Column(db.TIMESTAMP)
     event_id = db.Column(Integer, ForeignKey('events.id'))
 
     def __init__(self, start_date, end_date):
