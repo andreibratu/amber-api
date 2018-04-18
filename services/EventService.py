@@ -1,4 +1,4 @@
-from app.models import Event, User
+from app.models import Event, User, BusyTime
 from services.BusyTimesService import BusyTimesService
 from services.GeoService import GeoService
 from app.extensions import db
@@ -9,8 +9,9 @@ class EventService:
     @staticmethod
     def add_event(user_id, name, address, start_date, end_date, latitude, longitude):
         if BusyTimesService.is_time_period_available(user_id, start_date, end_date):
-            new_event = Event(name=name, address=address, start_date=start_date,
-                              end_date=end_date, latitude=latitude, longitude=longitude)
+            new_event = Event(name=name, address=address, latitude=latitude, longitude=longitude)
+            busy_time = BusyTime(start_date=start_date, end_date=end_date)
+            new_event.busytime = busy_time
             user_creating_event = User.query.get(user_id)
             new_event.users.append(user_creating_event)
             db.session.add(new_event)
@@ -30,8 +31,7 @@ class EventService:
             return event
         event.name = name
         event.address = address
-        event.start_date = start_date
-        event.end_date = end_date
+        event.busytime = BusyTime(start_date=start_date, end_date=end_date)
         event.latitude = latitude
         event.longitude = longitude
         db.session.commit()
