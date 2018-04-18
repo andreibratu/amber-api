@@ -9,9 +9,8 @@ class EventService:
     @staticmethod
     def add_event(user_id, name, address, start_date, end_date, latitude, longitude):
         if BusyTimesService.is_time_period_available(user_id, start_date, end_date):
-            new_event = Event(name=name, address=address, latitude=latitude, longitude=longitude)
-            busy_time = BusyTime(start_date=start_date, end_date=end_date)
-            new_event.busytime = busy_time
+            new_event = Event(name=name, address=address, latitude=latitude, longitude=longitude,
+                              start_date=start_date, end_date=end_date)
 
             user_creating_event = User.query.get(user_id)
             new_event.users.append(user_creating_event)
