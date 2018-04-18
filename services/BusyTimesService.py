@@ -5,7 +5,7 @@ class BusyTimesService:
 
     @staticmethod
     def get_user_busy_times(user_id):
-        user = User.query.filter(User.id == user_id)
+        user = User.query.get(User.id == user_id)
         return [x.busytime for x in user.events]
 
     @staticmethod
