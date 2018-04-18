@@ -63,7 +63,7 @@ def user_available_events_endpoint():
     user_id = request.args.get('user_id')
     lng = request.args.get('lng')
     lat = request.args.get('lat')
-    return EventService.get_available_events(user_id, lng, lat)
+    return jsonify(EventService.get_available_events(user_id, lng, lat)), status.HTTP_200_OK
 
 
 @app.route('/event/user', methods=['GET', 'POST', 'DELETE'], strict_slashes=False)
