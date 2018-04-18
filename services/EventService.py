@@ -94,6 +94,10 @@ class EventService:
     def get_available_events(user_id, user_longitude, user_latitude):
         events = Event.query.all()
         events = GeoService.filter_events_by_location(events, user_longitude, user_latitude)
-        events = BusyTimesService.filter_events_by_availability(events, User.query.get(user_id).busytimes)
+
+        user = User.query.get(user_id)
+        user_busytimes = [x.busytime for x in user.events]
+
+        events = BusyTimesService.filter_events_by_availability(events, user_busytimes)
         return events
 
