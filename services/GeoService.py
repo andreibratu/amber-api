@@ -4,8 +4,8 @@ LATITUDE_TO_KM = 111.23
 SEARCH_RADIUS_KM = 10
 
 
-def longitude_to_km(longitude):
-    return LATITUDE_TO_KM * cos(radians(longitude))
+def longitude_to_km(latitude):
+    return LATITUDE_TO_KM * cos(radians(latitude))
 
 
 def latitude_to_km(latitude):
