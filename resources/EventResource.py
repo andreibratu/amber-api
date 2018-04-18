@@ -16,6 +16,7 @@ def add_event_endpoint():
 
     if not event:
         return 'Time frame taken by other event', status.HTTP_409_CONFLICT
+
     else:
         return jsonify(event), status.HTTP_200_OK
 
@@ -25,28 +26,35 @@ def add_event_endpoint():
 def event_endpoint():
 
     if request.method == 'GET':
+
         event_id = request.args.get('event_id')
         events = EventService.get_event_by_id(event_id)
+
         if not events:
             return status.HTTP_404_NOT_FOUND
         else:
             return jsonify(events), status.HTTP_200_OK
 
     if request.method == 'PUT':
+
         payload = request.get_json()
         event = EventService.update_event(payload['event_id'], payload['name'], payload['address'],
                                           payload['start_date'], payload['end_date'],
                                           payload['latitude'], payload['longitude'])
         if not event:
             return status.HTTP_404_NOT_FOUND
+
         else:
             return jsonify(event), status.HTTP_200_OK
 
     if request.method == 'DELETE':
+
         event_id = request.args.get('event_id')
         result = EventService.delete_event(event_id)
+
         if not result:
             return status.HTTP_404_NOT_FOUND
+
         else:
             return status.HTTP_200_OK
 
@@ -66,23 +74,30 @@ def user_available_events_endpoint():
 def user_event_endpoint():
 
     if request.method == 'GET':
+
         user_id = request.args.get('user_id')
         return jsonify(EventService.get_user_events(user_id)), status.HTTP_200_OK
 
     if request.method == 'POST':
+
         payload = request.get_json()['event_id']
         result = EventService.add_user_to_event(payload['user_id'], payload['event_id'])
+
         if result == -1:
             return status.HTTP_404_NOT_FOUND
+
         elif result == -2:
             return status.HTTP_409_CONFLICT
 
     if request.method == 'DELETE':
+
         user_id = request.args.get('user_id')
         event_id = request.args.get('event_id')
         result = EventService.user_abandon_event(user_id, event_id)
+
         if not result:
             return status.HTTP_404_NOT_FOUND
+
         else:
             return jsonify(EventService.get_user_events(user_id)), status.HTTP_200_OK
 
