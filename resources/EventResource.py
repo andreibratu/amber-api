@@ -61,8 +61,8 @@ def event_endpoint():
 def user_available_events_endpoint():
 
     user_id = request.args.get('user_id')
-    lng = request.args.get('lng')
-    lat = request.args.get('lat')
+    lng = float(request.args.get('lng'))
+    lat = float(request.args.get('lat'))
     return jsonify(EventService.get_available_events(user_id, lng, lat)), status.HTTP_200_OK
 
 
