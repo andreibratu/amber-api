@@ -48,9 +48,7 @@ class EventService:
     def delete_event(event_id):
         event = Event.query.get(event_id)
         if event:
-            for x in event.users:
-                x.events = [y for y in x.events if y.id != event_id]
-            db.session.query(Event).filter(Event.id == event_id).delete()
+            db.session.delete(event)
             db.session.commit()
             return True
         else:
