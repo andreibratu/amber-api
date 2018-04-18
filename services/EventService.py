@@ -12,10 +12,13 @@ class EventService:
             new_event = Event(name=name, address=address, latitude=latitude, longitude=longitude)
             busy_time = BusyTime(start_date=start_date, end_date=end_date)
             new_event.busytime = busy_time
+
             user_creating_event = User.query.get(user_id)
             new_event.users.append(user_creating_event)
+
             db.session.add(new_event)
             db.session.commit()
+
             return new_event
         else:
             return None
