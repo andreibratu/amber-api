@@ -1,3 +1,5 @@
+import datetime
+
 from flask.json import JSONEncoder
 
 from app.models import User, Event, BusyTime
@@ -19,14 +21,13 @@ class Encoder(JSONEncoder):
                 'id': o.id,
                 'name': o.name,
                 'address': o.address,
-                'start_date': o.start_date.__str__(),
-                'end_date': o.end_date.__str__(),
+                'busytime': o.busytime,
                 'latitude': o.latitude,
                 'longitude': o.longitude,
                 'users': o.users
             }
         if isinstance(o, BusyTime):
             return {
-                'start_date': o.start_date.__str__(),
-                'end_date': o.end_date.__str__()
+                'start_date': datetime.datetime.fromtimestamp(o.start_date).__str__(),
+                'end_date': datetime.datetime.fromtimestamp(o.end_date).__str__()
             }
