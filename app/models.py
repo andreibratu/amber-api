@@ -74,7 +74,7 @@ class Event(db.Model):
     latitude = db.Column(db.Float)
     longitude = db.Column(db.Float)
 
-    busytime = relationship('BusyTime')
+    busytime = relationship('BusyTime', uselist=False)
 
     users = relationship(
         'User',
@@ -86,12 +86,11 @@ class Event(db.Model):
     def __repr__(self):
         return 'Event: ' + self.name
 
-    def __init__(self, name, address, start_date, end_date, latitude, longitude):
+    def __init__(self, name, address, latitude, longitude):
         self.name = name
         self.address = address
         self.latitude = latitude
         self.longitude = longitude
-        self.busytime = BusyTime(start_date, end_date)
 
 
 class Messages(db.Model):
