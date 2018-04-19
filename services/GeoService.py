@@ -24,6 +24,8 @@ class GeoService:
             lat_delta = abs(user_lat-x.latitude)
             lng_delta = abs(user_lng-x.longitude)
 
+            print(lng_delta, lat_delta)
+
             lng_km = longitude_to_km(lng_delta, user_lat)
             lat_km = latitude_to_km(lat_delta)
 
