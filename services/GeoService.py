@@ -21,6 +21,10 @@ class GeoService:
         filtered_events = []
 
         for x in events:
+
+            print(user_lat, x.latitude)
+            print(user_lng, x.longitude)
+
             lat_delta = abs(user_lat-x.latitude)
             lng_delta = abs(user_lng-x.longitude)
 
