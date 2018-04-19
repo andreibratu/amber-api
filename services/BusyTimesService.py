@@ -22,6 +22,8 @@ class BusyTimesService:
         )]
         print('Busytime filtered: ', events)
 
+        return events
+
     @staticmethod
     def is_time_period_available(user_id, user_given_start_date, user_given_end_date):
 
