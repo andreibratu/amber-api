@@ -69,12 +69,12 @@ class EventService:
         if not user or not event:
             return -1
         elif not BusyTimesService.is_time_period_available(
-                user.busytimes, event.busytime.start_date, event.busytime.end_date):
+                user_id, event.busytime.start_date, event.busytime.end_date):
             return -2
         else:
             event.users.append(user)
             db.session.commit()
-            return 1
+            return event
 
     @staticmethod
     def user_abandon_event(user_id, event_id):

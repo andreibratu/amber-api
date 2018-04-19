@@ -87,6 +87,9 @@ def user_event_endpoint():
         elif result == -2:
             return 'Time frame taken by another event', status.HTTP_409_CONFLICT
 
+        else:
+            return jsonify(result), status.HTTP_200_OK
+
     if request.method == 'DELETE':
 
         user_id = request.args.get('user_id')
