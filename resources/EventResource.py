@@ -78,7 +78,7 @@ def user_event_endpoint():
 
     if request.method == 'POST':
 
-        payload = request.get_json()['event_id']
+        payload = request.get_json()
         result = EventService.add_user_to_event(payload['user_id'], payload['event_id'])
 
         if result == -1:
