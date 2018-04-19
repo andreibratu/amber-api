@@ -64,7 +64,7 @@ def user_available_events_endpoint():
     lng = float(request.args.get('lng'))
     lat = float(request.args.get('lat'))
     search_radius = float(request.args.get('search_radius'))
-    return jsonify(EventService.get_available_events(user_id, lng, lat, search_radius)), status.HTTP_200_OK
+    return jsonify(EventService.get_available_events(user_id=user_id, user_lng=lng, user_lat=lat, search_radius=search_radius)), status.HTTP_200_OK
 
 
 @app.route('/event/user', methods=['GET', 'POST', 'DELETE'], strict_slashes=False)
