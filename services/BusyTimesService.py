@@ -16,11 +16,11 @@ class BusyTimesService:
 
     @staticmethod
     def filter_events_by_availability(events, user_busytimes):
-        print('Busytime unfiltered: ' + events)
+        print('Busytime unfiltered: ', events)
         events = [x for x in events for y in user_busytimes if not BusyTimesService.time_periods_overlap(
             x.busytime.start_date, x.busytime.end_date, y.start_date, y.end_date
         )]
-        print('Busytime filtered: ' + events)
+        print('Busytime filtered: ', events)
 
     @staticmethod
     def is_time_period_available(user_id, user_given_start_date, user_given_end_date):
