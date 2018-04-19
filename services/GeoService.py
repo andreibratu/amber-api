@@ -17,12 +17,22 @@ class GeoService:
     @staticmethod
     def filter_events_by_location(events, user_lng, user_lat, search_radius_km = 10):
         print('Geo unfiltered: ', events)
-        events = [x for x in events if (
-                longitude_to_km(abs(user_lng - x.longitude), user_lat) ** 2 +
-                latitude_to_km(abs(user_lat - x.latitude)) ** 2
-                < search_radius_km ** 2)
-                ]
-        print('Geo filtered: ', events)
 
-        return events
+        filtered_events = []
+
+        for x in events:
+            lat_delta = abs(user_lat-x.latitude)
+            lng_delta = abs(user_lng-x.longitude)
+
+            lng_km = longitude_to_km(lng_delta, user_lat)
+            lat_km = latitude_to_km(lat_delta)
+
+            print(lng_km, lat_km)
+
+            if lng_km ** 2 + lat_km ** 2 <= search_radius_km ** 2:
+                filtered_events.append(x)
+
+        print('Geo filtered: ', filtered_events)
+
+        return filtered_events
 
