@@ -96,9 +96,9 @@ class EventService:
             return event.messages
 
     @staticmethod
-    def get_available_events(user_id, user_longitude, user_latitude):
+    def get_available_events(user_id, user_lng, user_lat, search_radius):
         events = Event.query.all()
-        events = GeoService.filter_events_by_location(events, user_longitude, user_latitude)
+        events = GeoService.filter_events_by_location(events, user_lng, user_lat, search_radius)
 
         user = User.query.get(user_id)
         user_busytimes = [x.busytime for x in user.events]
