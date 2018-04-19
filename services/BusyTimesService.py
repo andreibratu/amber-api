@@ -26,13 +26,21 @@ class BusyTimesService:
 
         print('User busytimes: ', busytimes)
 
-        events = [x for x in events for y in busytimes if not BusyTimesService.time_periods_overlap(
-            x.busytime.start_date, x.busytime.end_date, y.start_date, y.end_date
-        )]
+        filtered_events = []
 
-        print('Busytime filtered: ', events)
+        for x in events:
+            print(x.busytime.start_date, x.busytime.end_date)
+            for y in busytimes:
+                print(y.start_date, y.end_date)
 
-        return events
+                if not BusyTimesService.time_periods_overlap(
+                        x.busytime.start_date, x.busytime.end_date,
+                        y.start_date, y.end_date):
+                    filtered_events.append(x)
+
+        print('Busytime filtered: ', filtered_events)
+
+        return filtered_events
 
     @staticmethod
     def is_time_period_available(user_id, user_given_start_date, user_given_end_date):
