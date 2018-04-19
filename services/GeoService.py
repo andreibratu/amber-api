@@ -19,7 +19,7 @@ class GeoService:
         events = [x for x in events if (
                 longitude_to_km(abs(user_lng - x.longitude), user_lat) ** 2 +
                 latitude_to_km(abs(user_lat - x.latitude)) ** 2
-                < search_radius_km ^ 2)
+                < search_radius_km ** 2)
                 ]
 
         return events
