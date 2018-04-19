@@ -100,9 +100,6 @@ class EventService:
         events = Event.query.all()
         events = GeoService.filter_events_by_location(events, user_lng, user_lat, search_radius)
 
-        user = User.query.get(user_id)
-        user_busytimes = [x.busytime for x in user.events]
-
-        events = BusyTimesService.filter_events_by_availability(events, user_busytimes)
+        events = BusyTimesService.filter_events_by_availability(events, user_id)
         return events
 

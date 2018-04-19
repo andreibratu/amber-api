@@ -11,15 +11,25 @@ class BusyTimesService:
     @staticmethod
     def time_periods_overlap(first_time_period_start_date, first_time_period_end_date,
                              second_time_period_start_date, second_time_period_end_date):
+        print(first_time_period_start_date, first_time_period_end_date)
+
+        print(second_time_period_start_date, second_time_period_end_date)
+
         return second_time_period_start_date <= first_time_period_start_date <= second_time_period_end_date \
                or second_time_period_start_date <= first_time_period_end_date <= second_time_period_end_date
 
     @staticmethod
-    def filter_events_by_availability(events, user_busytimes):
+    def filter_events_by_availability(events, user_id):
         print('Busytime unfiltered: ', events)
-        events = [x for x in events for y in user_busytimes if not BusyTimesService.time_periods_overlap(
+
+        busytimes = BusyTimesService.get_user_busy_times(user_id)
+
+        print('User busytimes: ', busytimes)
+
+        events = [x for x in events for y in busytimes if not BusyTimesService.time_periods_overlap(
             x.busytime.start_date, x.busytime.end_date, y.start_date, y.end_date
         )]
+
         print('Busytime filtered: ', events)
 
         return events
