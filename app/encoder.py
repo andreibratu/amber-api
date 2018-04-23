@@ -11,10 +11,12 @@ class Encoder(JSONEncoder):
             return {
                 'id': o.id,
                 'email': o.email,
-                'first_name': o.first_name,
-                'given_name': o.given_name,
+                'firstName': o.first_name,
+                'lastName': o.given_name,
                 'age': o.age,
-                'bio': o.bio
+                'bio': o.bio,
+                'firstLogin': o.first_time,
+                'interests': o.interests
             }
         if isinstance(o, Event):
             return {
@@ -22,12 +24,12 @@ class Encoder(JSONEncoder):
                 'name': o.name,
                 'address': o.address,
                 'busytime': o.busytime,
-                'latitude': o.latitude,
-                'longitude': o.longitude,
+                'lat': o.latitude,
+                'lng': o.longitude,
                 'users': o.users
             }
         if isinstance(o, BusyTime):
             return {
-                'start_date': datetime.datetime.fromtimestamp(o.start_date).__str__(),
-                'end_date': datetime.datetime.fromtimestamp(o.end_date).__str__()
+                'startDate': datetime.datetime.fromtimestamp(o.start_date).__str__(),
+                'endDate': datetime.datetime.fromtimestamp(o.end_date).__str__()
             }
