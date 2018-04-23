@@ -26,7 +26,7 @@ class User(db.Model):
     bio = db.Column(db.String(200))
     email = db.Column(db.String(50), unique=True, index=True)
     password = db.Column(db.String(200))
-    first_time = db.Column(db.Boolean)
+    first_time = db.Column(db.Boolean, default=True)
 
     interests = relationship(
         'Interest',

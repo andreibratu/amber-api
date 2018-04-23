@@ -23,7 +23,7 @@ class Encoder(JSONEncoder):
                 'id': o.id,
                 'name': o.name,
                 'address': o.address,
-                'busytime': o.busytime,
+                'busyTime': o.busytime,
                 'lat': o.latitude,
                 'lng': o.longitude,
                 'users': o.users
