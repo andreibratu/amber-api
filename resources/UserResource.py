@@ -1,7 +1,7 @@
+import flask_jwt
 from flask import request, jsonify
 from flask_api import status
 from flask_jwt import jwt_required
-
 from app import app
 from services.UserService import UserService
 
@@ -28,7 +28,8 @@ def register_user():
 def user_resource():
 
     if request.method == 'GET':
-        user_id = request.args.get('user_id')
+        user_id = flask_jwt.current_identity
+        print(user_id)
         user = UserService.get_user_by_id(user_id=user_id)
 
         if not user:
@@ -38,7 +39,8 @@ def user_resource():
 
     if request.method == 'PUT':
         payload = request.get_json()
-        user = UserService.update_user(payload['user_id'], payload['age'], payload['bio'],
+        user_id = flask_jwt.current_identity
+        user = UserService.update_user(user_id, payload['age'], payload['bio'],
                                        payload['first_name'], payload['given_name'])
 
         if not user:

@@ -9,7 +9,6 @@ class Encoder(JSONEncoder):
     def default(self, o):
         if isinstance(o, User):
             return {
-                'id': o.id,
                 'email': o.email,
                 'firstName': o.first_name,
                 'lastName': o.given_name,

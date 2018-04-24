@@ -1,3 +1,4 @@
+import flask_jwt
 from flask import request, jsonify
 from flask_api import status
 from flask_jwt import jwt_required
@@ -13,7 +14,8 @@ def event_endpoint():
     if request.method == 'POST':
 
         payload = request.get_json()
-        event = EventService.add_event(payload['user_id'], payload['name'], payload['address'], payload['start_date'],
+        user_id = flask_jwt.current_identity
+        event = EventService.add_event(user_id, payload['name'], payload['address'], payload['start_date'],
                                        payload['end_date'], payload['latitude'], payload['longitude'])
 
         if not event:
@@ -60,7 +62,7 @@ def event_endpoint():
 @jwt_required()
 def user_available_events_endpoint():
 
-    user_id = request.args.get('user_id')
+    user_id = flask_jwt.current_identity
     lng = float(request.args.get('lng'))
     lat = float(request.args.get('lat'))
     search_radius = float(request.args.get('search_radius'))
@@ -73,13 +75,14 @@ def user_event_endpoint():
 
     if request.method == 'GET':
 
-        user_id = request.args.get('user_id')
+        user_id = flask_jwt.current_identity
         return jsonify(EventService.get_user_events(user_id)), status.HTTP_200_OK
 
     if request.method == 'POST':
 
         payload = request.get_json()
-        result = EventService.add_user_to_event(payload['user_id'], payload['event_id'])
+        user_id = flask_jwt.current_identity
+        result = EventService.add_user_to_event(user_id, payload['event_id'])
 
         if result == -1:
             return 'Not found', status.HTTP_404_NOT_FOUND
@@ -92,7 +95,7 @@ def user_event_endpoint():
 
     if request.method == 'DELETE':
 
-        user_id = request.args.get('user_id')
+        user_id = flask_jwt.current_identity
         event_id = request.args.get('event_id')
         result = EventService.user_abandon_event(user_id, event_id)
 
@@ -105,7 +108,7 @@ def user_event_endpoint():
 
 @app.route('/event/messages', methods=['GET'], strict_slashes=False)
 @jwt_required()
-def event_messages_endpoint(event_id):
+def event_messages_endpoint():
 
     event_id = request.args.get('event_id')
     return jsonify(EventService.get_event_messages(event_id)), status.HTTP_200_OK
