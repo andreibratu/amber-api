@@ -75,13 +75,13 @@ def user_event_endpoint():
 
     if request.method == 'GET':
 
-        user_id = flask_jwt.current_identity
+        user_id = flask_jwt.current_identity.id
         return jsonify(EventService.get_user_events(user_id)), status.HTTP_200_OK
 
     if request.method == 'PATCH':
 
         payload = request.get_json()
-        user_id = flask_jwt.current_identity
+        user_id = flask_jwt.current_identity.id
         result = EventService.add_user_to_event(user_id, payload['event_id'])
 
         if result == -1:
@@ -95,7 +95,7 @@ def user_event_endpoint():
 
     if request.method == 'DELETE':
 
-        user_id = flask_jwt.current_identity
+        user_id = flask_jwt.current_identity.id
         event_id = request.args.get('event_id')
         result = EventService.user_abandon_event(user_id, event_id)
 
