@@ -28,9 +28,9 @@ def register_user():
 def user_resource():
 
     if request.method == 'GET':
-        user_id = flask_jwt.current_identity
-        print(user_id)
-        user = UserService.get_user_by_id(user_id=user_id)
+        user_email = flask_jwt.current_identity
+        print(user_email)
+        user = UserService.get_user_by_email(email=user_email)
 
         if not user:
             return 'User does not exist', status.HTTP_404_NOT_FOUND
