@@ -69,7 +69,7 @@ def user_available_events_endpoint():
     return jsonify(EventService.get_available_events(user_id=user_id, user_lng=lng, user_lat=lat, search_radius=search_radius)), status.HTTP_200_OK
 
 
-@app.route('/event/user', methods=['GET', 'POST', 'DELETE'], strict_slashes=False)
+@app.route('/event/user', methods=['GET', 'PATCH', 'DELETE'], strict_slashes=False)
 @jwt_required()
 def user_event_endpoint():
 
@@ -78,7 +78,7 @@ def user_event_endpoint():
         user_id = flask_jwt.current_identity
         return jsonify(EventService.get_user_events(user_id)), status.HTTP_200_OK
 
-    if request.method == 'POST':
+    if request.method == 'PATCH':
 
         payload = request.get_json()
         user_id = flask_jwt.current_identity
