@@ -33,3 +33,8 @@ class UserService:
         user.given_name = given_name
         db.session.commit()
         return user
+
+    @staticmethod
+    def get_user_busy_times(user_id):
+        user = UserService.get_user_by_id(user_id)
+        return [event.busytime for event in user.events]
