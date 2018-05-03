@@ -1,46 +1,35 @@
-from app.models import User, Event
+from services.UserService import UserService
+from functools import reduce
 
 
 class BusyTimesService:
 
     @staticmethod
-    def get_user_busy_times(user_id):
-        user = User.query.get(user_id)
-        return [x.busytime for x in user.events]
+    def events_by_availability_filter_builder(user_id):
+        def time_periods_overlap(ftpsd, ftped, stpsd, stped): return stpsd <= ftpsd <= stped or stpsd <= ftped <= stped
 
-    @staticmethod
-    def time_periods_overlap(first_time_period_start_date, first_time_period_end_date,
-                             second_time_period_start_date, second_time_period_end_date):
-        print(first_time_period_start_date, first_time_period_end_date)
-
-        print(second_time_period_start_date, second_time_period_end_date)
-
-        return second_time_period_start_date <= first_time_period_start_date <= second_time_period_end_date \
-               or second_time_period_start_date <= first_time_period_end_date <= second_time_period_end_date
-
-    @staticmethod
-    def filter_events_by_availability(events, user_id):
-        print('Busytime unfiltered: ', events)
-
-        busytimes = BusyTimesService.get_user_busy_times(user_id)
-
-        print('User busytimes: ', busytimes)
+        busytimes = UserService.get_user_busy_times(user_id)
 
         if not busytimes:
-            return events
+            return lambda event: True
 
-        events = [x for x in events for y in busytimes if not BusyTimesService.time_periods_overlap(
-            x.busytime.start_date, x.busytime.end_date, y.start_date, y.end_date
-        )]
-
-        print('Busytime filtered: ', events)
-
-        return events
+        return lambda event: reduce(
+            (lambda x, y: x and y),
+            map(
+                (lambda busytime: not time_periods_overlap(
+                    event.busytime.start_date, event.busytime.end_date, busytime.start_date, busytime.end_date)),
+                busytimes
+            )
+        )
 
     @staticmethod
     def is_time_period_available(user_id, user_given_start_date, user_given_end_date):
-        busytimes = BusyTimesService.get_user_busy_times(user_id)
+        def time_periods_overlap(ftpsd, ftped, stpsd, stped): return stpsd <= ftpsd <= stped or stpsd <= ftped <= stped
 
-        return [x for x in busytimes if BusyTimesService.time_periods_overlap(
-            x.start_date, x.end_date, user_given_start_date, user_given_end_date)] == []
+        busytimes = UserService.get_user_busy_times(user_id)
+
+        return filter(
+            (lambda busytime: time_periods_overlap(
+                user_given_start_date, user_given_end_date, busytime.start_date, busytime.end_date)),
+            busytimes) == []
         # No event conflicts with the given time period
