@@ -5,7 +5,7 @@ from services.InterestService import InterestService
 from flask.ext.api import status
 
 
-@app.route('/interests/', methods=['GET'])
+@app.route('/interests/', methods=['GET'], strict_slashes=False)
 @jwt_required()
 def interests_endpoint():
     return jsonify(InterestService.interests), status.HTTP_200_OK
