@@ -25,7 +25,8 @@ class UserService:
     @staticmethod
     def update_user(user_id, age, bio, first_name, given_name, interests):
         def parse_interests():
-            return [Interest(label=label, category=category) for category in interests for label in interests[category]]
+            return [Interest(label=option.get('label'), category=interest.get('category'))
+                    for key, interest in interests.items() for option in interest.get('options')]
 
         user = User.query.get(user_id)
         if not user:
