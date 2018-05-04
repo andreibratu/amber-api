@@ -56,7 +56,8 @@ class User(db.Model):
 class Interest(db.Model):
     __tablename__ = 'interests'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(30), index=True)
+    label = db.Column(db.String(30), index=True)
+    category = db.Column(db.String(40))
 
     users = relationship(
         "User",
@@ -64,7 +65,11 @@ class Interest(db.Model):
         back_populates='interests')
 
     def __repr__(self):
-        return 'Interest: ' + self.name
+        return 'Interest: ' + self.category + ' ' + self.interest
+
+    def __init__(self, label, category):
+        self.label = label
+        self.category = category
 
 
 class Event(db.Model):
