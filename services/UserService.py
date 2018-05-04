@@ -31,6 +31,13 @@ class UserService:
         user = User.query.get(user_id)
         if not user:
             return None
+
+        if age == '': age = None
+        if bio == '': bio = None
+        if first_name == '': first_name = None
+        if given_name == '': given_name = None
+        if interests == '': interests = None
+
         user.age = age
         user.bio = bio
         user.first_name = first_name

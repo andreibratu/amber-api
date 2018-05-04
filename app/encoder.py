@@ -16,7 +16,7 @@ class Encoder(JSONEncoder):
 
         if isinstance(o, User):
             return {
-                'email': o.email,
+                'username': o.email,
                 'firstName': o.first_name,
                 'lastName': o.given_name,
                 'age': o.age,
