@@ -2,7 +2,7 @@ from flask import jsonify
 from flask_jwt import jwt_required
 from app import app
 from services.InterestService import InterestService
-from flask.ext.api import status
+from flask_api import status
 
 
 @app.route('/interests/', methods=['GET'], strict_slashes=False)
