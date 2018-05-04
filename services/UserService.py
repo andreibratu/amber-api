@@ -35,7 +35,7 @@ class UserService:
         user.bio = bio
         user.first_name = first_name
         user.given_name = given_name
-        user.interests = parse_interests(interests)
+        user.interests = parse_interests()
         user.first_time = False
         db.session.commit()
         return user

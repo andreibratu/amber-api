@@ -17,11 +17,11 @@ class InterestService:
             return [element for element in list1 if element in list2]
 
         def interests_in_event(event):
-            event_interests = [interest for user in event.users for interest in user.interests]
+            event_interests = [interest.label for user in event.users for interest in user.interests]
             event_interests = list(set(event_interests))  # Removing duplicates
 
             return event_interests
 
-        user_interests = UserService.get_user_by_id(user_id).interests
+        user_interests = [interest.label for interest in UserService.get_user_by_id(user_id).interests]
 
         return lambda event: intersection(interests_in_event(event), user_interests) is not []
