@@ -40,7 +40,7 @@ def user_resource():
         payload = request.get_json()
         user_id = flask_jwt.current_identity.id
         user = UserService.update_user(user_id, payload['age'], payload['bio'],
-                                       payload['first_name'], payload['given_name'])
+                                       payload['firstName'], payload['givenName'], payload['interests'])
 
         if not user:
             return 'User does not exist', status.HTTP_404_NOT_FOUND

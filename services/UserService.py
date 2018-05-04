@@ -1,4 +1,4 @@
-from app.models import User
+from app.models import User, Interest
 from app.extensions import db
 
 
@@ -23,7 +23,10 @@ class UserService:
         return new_user
 
     @staticmethod
-    def update_user(user_id, age, bio, first_name, given_name):
+    def update_user(user_id, age, bio, first_name, given_name, interests):
+        def parse_interests():
+            return [Interest(label=label, category=category) for category in interests for label in interests[category]]
+
         user = User.query.get(user_id)
         if not user:
             return None
@@ -31,6 +34,7 @@ class UserService:
         user.bio = bio
         user.first_name = first_name
         user.given_name = given_name
+        user.interests = parse_interests(interests)
         db.session.commit()
         return user
 
