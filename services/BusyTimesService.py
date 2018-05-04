@@ -10,9 +10,6 @@ class BusyTimesService:
 
         busytimes = UserService.get_user_busy_times(user_id)
 
-        if not busytimes:
-            return lambda event: True
-
         return lambda event: reduce(
             (lambda x, y: x and y),
             map(

@@ -1,4 +1,5 @@
 from app.models import Event, User, BusyTime
+from services.InterestService import InterestService
 from services.BusyTimesService import BusyTimesService
 from services.GeoService import GeoService
 from app.extensions import db
@@ -97,9 +98,15 @@ class EventService:
 
     @staticmethod
     def get_available_events(user_id, user_lng, user_lat, search_radius):
-        events = Event.query.all()
-        events = GeoService.filter_events_by_location(events, user_lng, user_lat, search_radius)
+        filters = [BusyTimesService.events_by_availability_filter_builder(user_id),
+                   GeoService.events_by_location_filter_builder(user_lng, user_lat, search_radius),
+                   InterestService.events_by_interests_filter_builder(user_id)
+                   ]
 
-        events = BusyTimesService.filter_events_by_availability(events, user_id)
+        events = Event.query.all()
+
+        for f in filters:
+            events = events.filter(f, events)
+
         return events
 
