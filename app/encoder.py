@@ -6,7 +6,14 @@ from app.models import User, Event, BusyTime
 
 
 class Encoder(JSONEncoder):
-    def default(self, o):
+   def default(self, o):
+        def encode_interests(interests):
+            interest_dict = {interest.category: [] for interest in interests}
+            for interest in interests:
+                interest_dict[interest.category].append(interest.label)
+
+            return interest_dict
+
         if isinstance(o, User):
             return {
                 'username': o.email,
@@ -15,7 +22,7 @@ class Encoder(JSONEncoder):
                 'age': o.age,
                 'bio': o.bio,
                 'firstLogin': o.first_time,
-                'interests': {interest.category: interest.label for interest in o.interests}
+                'interests': encode_interests(o.interests)
             }
         if isinstance(o, Event):
             return {
