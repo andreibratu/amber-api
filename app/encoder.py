@@ -15,7 +15,7 @@ class Encoder(JSONEncoder):
                 'age': o.age,
                 'bio': o.bio,
                 'firstLogin': o.first_time,
-                'interests': {interest.category: interest.label for interest in interests}
+                'interests': {interest.category: interest.label for interest in o.interests}
             }
         if isinstance(o, Event):
             return {
