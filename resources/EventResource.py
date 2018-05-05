@@ -58,7 +58,7 @@ def event_endpoint():
             return 'Deleted', status.HTTP_200_OK
 
 
-@app.route('/event/available_events', methods=['GET'], strict_slashes=False)
+@app.route('/event/available-events', methods=['GET'], strict_slashes=False)
 @jwt_required()
 def user_available_events_endpoint():
 
