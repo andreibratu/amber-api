@@ -65,7 +65,7 @@ def user_available_events_endpoint():
     user_id = flask_jwt.current_identity
     lng = float(request.args.get('lng'))
     lat = float(request.args.get('lat'))
-    search_radius = float(request.args.get('search_radius'))
+    search_radius = float(request.args.get('searchRadius'))
     return jsonify(EventService.get_available_events(user_id=user_id, user_lng=lng, user_lat=lat, search_radius=search_radius)), status.HTTP_200_OK
 
 
