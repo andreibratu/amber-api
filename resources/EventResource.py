@@ -14,10 +14,11 @@ def event_endpoint():
 
         payload = request.get_json()
         user_id = flask_jwt.current_identity
-        event = EventService.add_event(user_id=payload['userId'], name=payload['name'], address=payload['address'],
-                                       start_date=payload['startDate'], start_time=payload['startTime'],
-                                       end_date=payload['endDate'], end_time=payload['endTime'],
-                                       latitude=payload['latitude'], longitude=payload['longitude'])
+        event = EventService.add_event(user_id=flask_jwt.current_identity.id, name=payload['name'],
+                                       address=payload['address'], start_date=payload['startDate'],
+                                       start_time=payload['startTime'], end_date=payload['endDate'],
+                                       end_time=payload['endTime'], latitude=payload['latitude'],
+                                       longitude=payload['longitude'])
 
         if not event:
             return 'Time frame taken by other event', status.HTTP_409_CONFLICT
