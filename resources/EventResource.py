@@ -15,8 +15,8 @@ def event_endpoint():
 
         payload = request.get_json()
         user_id = flask_jwt.current_identity
-        event = EventService.add_event(user_id, payload['name'], payload['address'], payload['start_date'],
-                                       payload['end_date'], payload['latitude'], payload['longitude'])
+        event = EventService.add_event(user_id, payload['name'], payload['address'], payload['startDate'],
+                                       payload['endDate'], payload['latitude'], payload['longitude'])
 
         if not event:
             return 'Time frame taken by other event', status.HTTP_409_CONFLICT
@@ -37,8 +37,8 @@ def event_endpoint():
     if request.method == 'PUT':
 
         payload = request.get_json()
-        event = EventService.update_event(payload['event_id'], payload['name'], payload['address'],
-                                          payload['start_date'], payload['end_date'],
+        event = EventService.update_event(payload['eventId'], payload['name'], payload['address'],
+                                          payload['startDate'], payload['endDate'],
                                           payload['latitude'], payload['longitude'])
         if not event:
             return 'Not found', status.HTTP_404_NOT_FOUND
@@ -48,7 +48,7 @@ def event_endpoint():
 
     if request.method == 'DELETE':
 
-        event_id = request.args.get('event_id')
+        event_id = request.args.get('eventId')
         result = EventService.delete_event(event_id)
 
         if not result:
@@ -110,5 +110,5 @@ def user_event_endpoint():
 @jwt_required()
 def event_messages_endpoint():
 
-    event_id = request.args.get('event_id')
+    event_id = request.args.get('eventId')
     return jsonify(EventService.get_event_messages(event_id)), status.HTTP_200_OK
