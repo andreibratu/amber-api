@@ -1,3 +1,4 @@
+from datetime import datetime
 from app.models import Event, User, BusyTime
 from services.InterestService import InterestService
 from services.BusyTimesService import BusyTimesService
@@ -6,18 +7,24 @@ from app.extensions import db
 
 
 class EventService:
-
     @staticmethod
-    def add_event(user_id, name, address, start_date, end_date, latitude, longitude):
+    def add_event(user_id, name, address, start_date, start_time, end_date, end_time, latitude, longitude):
+        def string_to_timestamp(date, time):
+            time_string = date + ' ' + time
+            dt = datetime.strptime(time_string, '%Y-%m-%d %H:%M')
+            return int(dt.timestamp())
 
-        if BusyTimesService.is_time_period_available(user_id, start_date, end_date):
+        start = string_to_timestamp(start_date, start_time)
+        end = string_to_timestamp(end_date, end_time)
+
+        if BusyTimesService.is_time_period_available(user_id, start, end):
 
             new_event = Event(name=name, address=address, latitude=latitude, longitude=longitude)
 
             user_creating_event = User.query.get(user_id)
             new_event.users.append(user_creating_event)
 
-            busy_time = BusyTime(start_date= start_date, end_date=end_date)
+            busy_time = BusyTime(start_date=start, end_date=end)
 
             new_event.busytime = busy_time
 
@@ -33,13 +40,20 @@ class EventService:
         return Event.query.get(event_id)
 
     @staticmethod
-    def update_event(event_id, name, address, start_date, end_date, latitude, longitude):
+    def update_event(event_id, name, address, start_date, start_time, end_date, end_time, latitude, longitude):
+        def string_to_timestamp(date, time):
+            time_string = date + ' ' + time
+            dt = datetime.strptime(time_string, '%Y-%m-%d %H:%M')
+            return int(dt.timestamp())
+
         event = Event.query.get(event_id)
         if not event:
             return event
         event.name = name
         event.address = address
-        event.busytime = BusyTime(start_date=start_date, end_date=end_date)
+        start = string_to_timestamp(start_date, start_time)
+        end = string_to_timestamp(end_date, end_time)
+        event.busytime = BusyTime(start_date=start, end_date=end)
         event.latitude = latitude
         event.longitude = longitude
         db.session.commit()
