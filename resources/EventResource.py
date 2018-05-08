@@ -7,18 +7,16 @@ from app import app
 from services.EventService import EventService
 
 
-@app.route('/event', methods=['POST', 'GET', 'PUT', 'DELETE'], strict_slashes=False)
+@app.route('/event', methods=['POST', 'GET'], strict_slashes=False)
 @jwt_required()
 def event_endpoint():
     if request.method == 'POST':
 
         payload = request.get_json()
         user_id = flask_jwt.current_identity
-        event = EventService.add_event(user_id=flask_jwt.current_identity.id, name=payload['name'],
-                                       address=payload['address'], start_date=payload['startDate'],
-                                       start_time=payload['startTime'], end_date=payload['endDate'],
-                                       end_time=payload['endTime'], latitude=payload['latitude'],
-                                       longitude=payload['longitude'])
+        event = EventService.add_event(user_id=user_id, title=payload['title'],
+                                       description=payload['description'], busytime=payload['busyTime'],
+                                       place=payload['place'])
 
         if not event:
             return 'Time frame taken by other event', status.HTTP_409_CONFLICT
@@ -36,30 +34,6 @@ def event_endpoint():
         else:
             return jsonify(events), status.HTTP_200_OK
 
-    if request.method == 'PUT':
-
-        payload = request.get_json()
-        event = EventService.update_event(event_id=payload['eventId'], name=payload['name'], address=payload['address'],
-                                          start_date=payload['startDate'], start_time=payload['startTime'],
-                                          end_date=payload['endDate'], end_time=payload['endTime'],
-                                          latitude=payload['latitude'], longitude=payload['longitude'])
-        if not event:
-            return 'Not found', status.HTTP_404_NOT_FOUND
-
-        else:
-            return jsonify(event), status.HTTP_200_OK
-
-    if request.method == 'DELETE':
-
-        event_id = request.args.get('eventId')
-        result = EventService.delete_event(event_id)
-
-        if not result:
-            return 'Not found', status.HTTP_404_NOT_FOUND
-
-        else:
-            return 'Deleted', status.HTTP_200_OK
-
 
 @app.route('/event/available-events', methods=['GET'], strict_slashes=False)
 @jwt_required()
@@ -72,18 +46,21 @@ def user_available_events_endpoint():
                                                      user_lat=lat, search_radius=search_radius)), status.HTTP_200_OK
 
 
-@app.route('/event/user', methods=['GET', 'PATCH', 'DELETE'], strict_slashes=False)
+@app.route('/event/user', methods=['GET', 'PATCH'], strict_slashes=False)
 @jwt_required()
 def user_event_endpoint():
     if request.method == 'GET':
         user_id = flask_jwt.current_identity.id
-        return jsonify(EventService.get_user_events(user_id)), status.HTTP_200_OK
+        lat = float(request.args.get('lat'))
+        lng = float(request.args.get('lng'))
+        return jsonify(EventService.get_user_events(
+            user_id=user_id, user_lat=lat, user_lng=lng)), status.HTTP_200_OK
 
     if request.method == 'PATCH':
 
         payload = request.get_json()
         user_id = flask_jwt.current_identity.id
-        result = EventService.add_user_to_event(user_id, payload['event_id'])
+        result = EventService.add_user_to_event(user_id, payload['eventId'])
 
         if result == -1:
             return 'Not found', status.HTTP_404_NOT_FOUND
@@ -93,22 +70,3 @@ def user_event_endpoint():
 
         else:
             return jsonify(result), status.HTTP_200_OK
-
-    if request.method == 'DELETE':
-
-        user_id = flask_jwt.current_identity.id
-        event_id = request.args.get('event_id')
-        result = EventService.user_abandon_event(user_id, event_id)
-
-        if not result:
-            return 'Not found', status.HTTP_404_NOT_FOUND
-
-        else:
-            return jsonify(EventService.get_user_events(user_id)), status.HTTP_200_OK
-
-
-@app.route('/event/messages', methods=['GET'], strict_slashes=False)
-@jwt_required()
-def event_messages_endpoint():
-    event_id = request.args.get('eventId')
-    return jsonify(EventService.get_event_messages(event_id)), status.HTTP_200_OK
