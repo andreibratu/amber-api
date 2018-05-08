@@ -25,8 +25,8 @@ class BusyTimeService:
 
         busytimes = UserService.get_user_busy_times(user_id)
 
-        return filter(
-            (lambda busytime: time_periods_overlap(
-                user_given_start_date, user_given_end_date, busytime.start_date, busytime.end_date)),
-            busytimes) == []
+        return list(
+            filter((lambda busytime: time_periods_overlap(
+                user_given_start_date, user_given_end_date, busytime.start, busytime.end)), busytimes)
+        ) == []
         # No event conflicts with the given time period
