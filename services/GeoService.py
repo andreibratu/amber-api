@@ -29,7 +29,7 @@ class GeoService:
 
         def dist(lng_km, lat_km): return sqrt(lng_km ** 2 + lat_km ** 2)
 
-        def pythagoras(lng_km, lat_km, radius): return dist(lng_km=lng_km, lat_km=lat_km) <= sqrt(radius)
+        def pythagoras(lng_km, lat_km, radius): return dist(lng_km=lng_km, lat_km=lat_km) <= radius
 
         return lambda event: pythagoras(lng_to_km(lng-event.place.lng), lat_to_km(lat-event.place.lat), search_radius_km)
 

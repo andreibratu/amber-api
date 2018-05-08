@@ -20,12 +20,8 @@ class InterestService:
             event_interests = [interest.label for user in event.users for interest in user.interests]
             event_interests = list(set(event_interests))  # Removing duplicates
 
-            print('Event interests', event_interests)
-
             return event_interests
 
         user_interests = [interest.label for interest in UserService.get_user_by_id(user_id).interests]
-
-        print('User interests ', user_interests)
 
         return lambda event: intersection(interests_in_event(event), user_interests) is not []
