@@ -20,7 +20,7 @@ class EventService:
         if BusyTimeService.is_time_period_available(user_id, start, end):
             busytime = BusyTime(start=start, end=end)
             place = Place(name=place['name'], address=place['address'], lat=place['lat'],
-                          lng=place['lng'], thumbnail=place['thumbnail'])
+                          lng=place['lng'], thumbnail=place['thumbnail'], type=place['type'])
 
             new_event = Event(title=title, description=description, busytime=busytime, place=place)
 

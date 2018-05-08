@@ -104,14 +104,16 @@ class Place(db.Model):
     lat = db.Column(db.Float)
     lng = db.Column(db.Float)
     thumbnail = db.Column(db.String(300))
+    type = db.Column(db.String(30))
     event_id = db.Column(Integer, ForeignKey('events.id'))
 
-    def __init__(self, name, address, lat, lng, thumbnail):
+    def __init__(self, name, address, lat, lng, thumbnail, type):
         self.name = name
         self.address = address
         self.lat = lat
         self.lng = lng
         self.thumbnail = thumbnail
+        self.type = type
 
 
 class BusyTime(db.Model):
