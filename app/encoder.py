@@ -37,12 +37,13 @@ class Encoder(JSONEncoder):
                 'busyTime': o.busytime,
                 'place': o.place,
                 'eta': o.eta,
-                'dist': o.dist
+                'dist': o.dist,
+                'users': o.users
             }
         if isinstance(o, BusyTime):
             return {
-                'startDate': datetime.datetime.fromtimestamp(o.start).__str__(),
-                'endDate': datetime.datetime.fromtimestamp(o.end).__str__()
+                'startDate': datetime.datetime.fromtimestamp(o.start).strftime('%H:%M, %d.%m.%Y'),
+                'endDate': datetime.datetime.fromtimestamp(o.end).strftime('%H:%M, %d.%m.%Y')
             }
         if isinstance(o, Place):
             return {
