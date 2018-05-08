@@ -68,16 +68,16 @@ class EventService:
 
     @staticmethod
     def get_available_events(user_id, user_lng, user_lat, search_radius):
-        filters = [BusyTimeService.events_by_availability_filter_builder(user_id),
-                   GeoService.events_by_location_filter_builder(user_lng, user_lat, search_radius),
-                   InterestService.events_by_interests_filter_builder(user_id)
+        filters = [(BusyTimeService.events_by_availability_filter_builder(user_id), 'busytime'),
+                   (GeoService.events_by_location_filter_builder(user_lng, user_lat, search_radius), 'geo'),
+                   (InterestService.events_by_interests_filter_builder(user_id), 'interest')
                    ]
 
         events = Event.query.all()
 
         print('Unfiltered events: ', events)
-        for f in filters:
-            print('Filtered: ', events)
+        for f, debug_name in filters:
+            print('Filtered: ', events, debug_name)
             events = list(filter(f, events))
 
         return events
