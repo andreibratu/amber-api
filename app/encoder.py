@@ -2,11 +2,11 @@ import datetime
 
 from flask.json import JSONEncoder
 
-from app.models import User, Event, BusyTime
+from app.models import User, Event, BusyTime, Place
 
 
 class Encoder(JSONEncoder):
-   def default(self, o):
+    def default(self, o):
         def encode_interests(interests):
             interest_dict = {interest.category: [] for interest in interests}
             for interest in interests:
@@ -25,17 +25,30 @@ class Encoder(JSONEncoder):
                 'interests': encode_interests(o.interests)
             }
         if isinstance(o, Event):
+            if not hasattr(o, 'eta'):
+                o.eta = ''
+            if not hasattr(o, 'dist'):
+                o.dist = ''
+
             return {
                 'id': o.id,
-                'name': o.name,
-                'address': o.address,
+                'title': o.title,
+                'description': o.description,
                 'busyTime': o.busytime,
-                'lat': o.latitude,
-                'lng': o.longitude,
-                'users': o.users
+                'place': o.place,
+                'eta': o.eta,
+                'dist': o.dist
             }
         if isinstance(o, BusyTime):
             return {
-                'startDate': datetime.datetime.fromtimestamp(o.start_date).__str__(),
-                'endDate': datetime.datetime.fromtimestamp(o.end_date).__str__()
+                'startDate': datetime.datetime.fromtimestamp(o.start).__str__(),
+                'endDate': datetime.datetime.fromtimestamp(o.end).__str__()
+            }
+        if isinstance(o, Place):
+            return {
+                'name': o.name,
+                'address': o.address,
+                'lat': o.lat,
+                'lng': o.lng,
+                'thumbnail': o.thumbnail
             }
