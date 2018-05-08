@@ -13,7 +13,7 @@ def event_endpoint():
     if request.method == 'POST':
 
         payload = request.get_json()
-        user_id = flask_jwt.current_identity
+        user_id = flask_jwt.current_identity.id
         event = EventService.add_event(user_id=user_id, title=payload['title'],
                                        description=payload['description'], busytime=payload['busyTime'],
                                        place=payload['place'])
