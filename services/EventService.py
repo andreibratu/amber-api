@@ -75,7 +75,9 @@ class EventService:
 
         events = Event.query.all()
 
+        print('Unfiltered events: ', events)
         for f in filters:
+            print('Filtered: ', events)
             events = list(filter(f, events))
 
         return events
