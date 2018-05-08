@@ -92,9 +92,9 @@ class EventService:
         user = Event.query.get(user_id)
 
         if not event or not user:
-            return False
+            return None
         else:
             event.users = [user for user in event.users if user.id != user_id]
             db.session.commit()
-            return True
+            return event
 

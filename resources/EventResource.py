@@ -79,8 +79,7 @@ def user_event_endpoint():
 
         result = EventService.leave_event(event_id=event_id, user_id=user_id)
 
-        if result:
-            return 'Deleted', status.HTTP_200_OK
-        else:
+        if not result:
             return 'Not found', status.HTTP_404_NOT_FOUND
-
+        else:
+            return jsonify(result), status.HTTP_200_OK
