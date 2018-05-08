@@ -76,7 +76,7 @@ class EventService:
         events = Event.query.all()
 
         for f in filters:
-            events = list(events.filter(f, events))
+            events = list(filter(f, events))
 
         return events
 
