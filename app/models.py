@@ -117,10 +117,10 @@ class Place(db.Model):
 class BusyTime(db.Model):
     __tablename__ = 'busytimes'
     id = db.Column(db.Integer, primary_key=True)
-    start_date = db.Column(db.BigInteger)
-    end_date = db.Column(db.BigInteger)
+    start = db.Column(db.BigInteger)
+    end = db.Column(db.BigInteger)
     event_id = db.Column(Integer, ForeignKey('events.id'))
 
-    def __init__(self, start_date, end_date):
-        self.start_date = start_date
-        self.end_date = end_date
+    def __init__(self, start, end):
+        self.start = start
+        self.end = end
