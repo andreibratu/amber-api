@@ -59,7 +59,7 @@ class EventService:
         if not user or not event:
             return -1
         elif not BusyTimeService.is_time_period_available(
-                user_id, event.busytime.start_date, event.busytime.end_date):
+                user_id, event.busytime.start, event.busytime.end):
             return -2
         else:
             event.users.append(user)

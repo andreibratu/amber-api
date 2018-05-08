@@ -14,7 +14,7 @@ class BusyTimeService:
             (lambda x, y: x and y),
             map(
                 (lambda busytime: not time_periods_overlap(
-                    event.busytime.start_date, event.busytime.end_date, busytime.start_date, busytime.end_date)),
+                    event.busytime.start, event.busytime.end, busytime.start, busytime.end)),
                 busytimes
             )
         )
