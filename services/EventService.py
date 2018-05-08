@@ -80,3 +80,15 @@ class EventService:
 
         return events
 
+    @staticmethod
+    def leave_event(event_id, user_id):
+        event = Event.query.get(event_id)
+        user = Event.query.get(user_id)
+
+        if not event or not user:
+            return False
+        else:
+            event.users = [user for user in event.users if user.id != user_id]
+            db.session.commit()
+            return True
+

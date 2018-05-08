@@ -46,7 +46,7 @@ def user_available_events_endpoint():
                                                      user_lat=lat, search_radius=search_radius)), status.HTTP_200_OK
 
 
-@app.route('/event/user', methods=['GET', 'PATCH'], strict_slashes=False)
+@app.route('/event/user', methods=['GET', 'PATCH', 'DELETE'], strict_slashes=False)
 @jwt_required()
 def user_event_endpoint():
     if request.method == 'GET':
@@ -70,3 +70,16 @@ def user_event_endpoint():
 
         else:
             return jsonify(result), status.HTTP_200_OK
+
+    if request.method == 'DELETE':
+
+        user_id = flask_jwt.current_identity.id
+        event_id = request.args.get('eventID')
+
+        result = EventService.leave_event(event_id=event_id, user_id=user_id)
+
+        if result:
+            return 'Deleted', status.HTTP_200_OK
+        else:
+            return 'Not found', status.HTTP_404_NOT_FOUND
+
