@@ -87,7 +87,7 @@ class Event(db.Model):
         back_populates='events')
 
     def __repr__(self):
-        return 'Event: ' + self.name
+        return 'Event: ' + self.title
 
     def __init__(self, title, description, busytime, place):
         self.title = title

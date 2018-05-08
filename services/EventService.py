@@ -44,13 +44,10 @@ class EventService:
         if not user:
             return None
         else:
-            print(user)
             events = user.events
             for event in events:
-                print(event)
                 dist, eta = GeoService.calculate_dist_eta(user_lng=user_lng, user_lat=user_lat,
                                                           event_lat=event.place.lat, event_lng=event.place.lng)
-                print(dist, eta)
                 event.dist = dist
                 event.eta = eta
             return events
