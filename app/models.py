@@ -75,41 +75,43 @@ class Interest(db.Model):
 class Event(db.Model):
     __tablename__ = 'events'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(200))
-    address = db.Column(db.String(200))
-    latitude = db.Column(db.Float)
-    longitude = db.Column(db.Float)
+    title = db.Column(db.String(200))
+    description = db.Column(db.String(256))
 
     busytime = relationship('BusyTime', uselist=False)
+    place = relationship('Place', uselist=False)
 
     users = relationship(
         'User',
         secondary=user_event_association_table,
         back_populates='events')
 
-    messages = relationship('Messages', back_populates='event')
-
     def __repr__(self):
         return 'Event: ' + self.name
 
-    def __init__(self, name, address, latitude, longitude):
+    def __init__(self, title, description, busytime, place):
+        self.title = title
+        self.description = description
+        self.place = place
+        self.busytime = busytime
+
+
+class Place(db.Model):
+    __tablename__ = 'places'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(200))
+    address = db.Column(db.String(200))
+    lat = db.Column(db.Float)
+    lng = db.Column(db.Float)
+    thumbnail = db.Column(db.String(300))
+    event_id = db.Column(Integer, ForeignKey('events.id'))
+
+    def __init__(self, name, address, lat, lng, thumbnail):
         self.name = name
         self.address = address
-        self.latitude = latitude
-        self.longitude = longitude
-
-
-class Messages(db.Model):
-    __tablename__ = 'messages'
-    id = db.Column(db.Integer, primary_key=True)
-    text = db.Column(db.String(500))
-    date = db.Column(db.DateTime, default=datetime.now)
-
-    event_id = Column(Integer, ForeignKey('events.id'))
-    event = relationship("Event", back_populates='messages', uselist=False)
-
-    user_id = Column(Integer, ForeignKey('users.id'))
-    user = relationship("User")
+        self.lat = lat
+        self.lng = lng
+        self.thumbnail = thumbnail
 
 
 class BusyTime(db.Model):
