@@ -16,7 +16,7 @@ class GeoService:
         def dist(lng_km, lat_km): return sqrt(lng_km ** 2 + lat_km ** 2)
 
         dist = dist(lng_km=lng_to_km(user_lng-event_lng), lat_km=lat_to_km(event_lat-user_lat))
-        dist = float('0:.1f'.format(dist))
+        dist = float('{0:.1f}'.format(dist))
         eta = int(dist/KM_PER_MIN)
 
         return dist, eta
