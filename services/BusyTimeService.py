@@ -2,7 +2,7 @@ from services.UserService import UserService
 from functools import reduce
 
 
-class BusyTimesService:
+class BusyTimeService:
 
     @staticmethod
     def events_by_availability_filter_builder(user_id):
