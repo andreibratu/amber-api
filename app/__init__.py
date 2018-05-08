@@ -35,4 +35,4 @@ from app import models
 # import needed for making the routes accessible
 from resources import UserResource, EventResource, InterestResource
 
-app.run(port=os.environ.get('PORT'), host='0.0.0.0')
+app.run(port=5000, host='0.0.0.0')
