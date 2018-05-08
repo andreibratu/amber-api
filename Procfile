@@ -1,1 +1,1 @@
-web: flask db migrate; flask db upgrade; flask translate compile; gunicorn ember:app
+web: flask translate compile; gunicorn ember:app

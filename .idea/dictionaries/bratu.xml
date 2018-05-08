@@ -5,6 +5,7 @@
       <w>dystopia</w>
       <w>ftped</w>
       <w>ftpsd</w>
+      <w>gunicorn</w>
       <w>stped</w>
       <w>stpsd</w>
     </words>
