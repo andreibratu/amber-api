@@ -38,7 +38,7 @@ def event_endpoint():
 @app.route('/event/available-events', methods=['GET'], strict_slashes=False)
 @jwt_required()
 def user_available_events_endpoint():
-    user_id = flask_jwt.current_identity
+    user_id = flask_jwt.current_identity.id
     lng = float(request.args.get('lng'))
     lat = float(request.args.get('lat'))
     search_radius = float(request.args.get('searchRadius'))
