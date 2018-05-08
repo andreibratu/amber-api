@@ -53,7 +53,6 @@ def user_event_endpoint():
         user_id = flask_jwt.current_identity.id
         lat = float(request.args.get('lat'))
         lng = float(request.args.get('lng'))
-        print('user_event_endpoint', lat, lng)
         return jsonify(EventService.get_user_events(
             user_id=user_id, user_lat=lat, user_lng=lng)), status.HTTP_200_OK
 
