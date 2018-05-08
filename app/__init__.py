@@ -1,10 +1,9 @@
 import os
 from datetime import timedelta
-from logging.handlers import RotatingFileHandler
 
-from flask import Flask, logging
+from flask import Flask
 from app.config import Config
-from app.extensions import db, migrate, jwt, socketIO, cors
+from app.extensions import db, migrate, jwt, cors
 from services.SecurityService import SecurityService
 from flask_jwt import JWT
 from app.encoder import Encoder
@@ -14,7 +13,6 @@ from app.encoder import Encoder
 def register_extensions(app):
     db.init_app(app)
     migrate.init_app(app, db)
-    socketIO.init_app(app)
     cors.init_app(app)
 
 
@@ -37,4 +35,4 @@ from app import models
 # import needed for making the routes accessible
 from resources import UserResource, EventResource, InterestResource
 
-socketIO.run(app=app, port=os.environ.get('PORT'), host='0.0.0.0')
+app.run(app=app, port=os.environ.get('PORT'), host='0.0.0.0')
