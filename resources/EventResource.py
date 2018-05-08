@@ -75,7 +75,7 @@ def user_event_endpoint():
     if request.method == 'DELETE':
 
         user_id = flask_jwt.current_identity.id
-        event_id = request.args.get('eventID')
+        event_id = request.args.get('eventId')
 
         result = EventService.leave_event(event_id=event_id, user_id=user_id)
 
