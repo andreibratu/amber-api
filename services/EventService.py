@@ -86,7 +86,7 @@ class EventService:
             event.dist = dist
             event.eta = eta
 
-        return sorted(events, key=(lambda ev: ev.place.start))
+        return sorted(events, key=(lambda ev: ev.busytime.start))
 
     @staticmethod
     def leave_event(event_id, user_id):
