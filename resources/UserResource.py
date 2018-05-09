@@ -46,3 +46,10 @@ def user_resource():
             return 'User does not exist', status.HTTP_404_NOT_FOUND
         else:
             return jsonify(user), status.HTTP_200_OK
+
+
+@app.route('/user/people', methods=['GET'], strict_slashes=False)
+@jwt_required
+def people_endpoint():
+    people = UserService.get_people()
+    return jsonify(people), status.HTTP_200_OK
