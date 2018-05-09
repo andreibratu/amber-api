@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="amber-net-api" uuid="fbfb3353-b2a1-4859-a942-9ea9395b8667">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://ec2-54-243-63-13.compute-1.amazonaws.com:5432/d85unn3nu8qgeb</jdbc-url>
+      <driver-properties>
+        <property name="ssl" value="true" />
+        <property name="sslfactory" value="org.postgresql.ssl.NonValidatingFactory" />
+      </driver-properties>
+    </data-source>
+  </component>
+</project>

@@ -6,7 +6,8 @@ class BusyTimeService:
 
     @staticmethod
     def events_by_availability_filter_builder(user_id):
-        def time_periods_overlap(ftpsd, ftped, stpsd, stped): return stpsd <= ftpsd <= stped or stpsd <= ftped <= stped
+        def time_periods_overlap(ftpsd, ftped, stpsd, stped):
+            return stpsd <= ftpsd <= stped or stpsd <= ftped <= stped
 
         busytimes = UserService.get_user_busy_times(user_id)
 
@@ -25,6 +26,9 @@ class BusyTimeService:
     @staticmethod
     def is_time_period_available(user_id, user_given_start_date, user_given_end_date):
         def time_periods_overlap(ftpsd, ftped, stpsd, stped): return stpsd <= ftpsd <= stped or stpsd <= ftped <= stped
+
+        if user_given_end_date <= user_given_start_date:
+            return False
 
         busytimes = UserService.get_user_busy_times(user_id)
 
