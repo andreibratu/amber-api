@@ -49,7 +49,7 @@ def user_resource():
 
 
 @app.route('/user/people', methods=['GET'], strict_slashes=False)
-@jwt_required
+@jwt_required()
 def people_endpoint():
     people = UserService.get_people()
     return jsonify(people), status.HTTP_200_OK

@@ -37,12 +37,12 @@ def event_endpoint():
     if request.method == 'DELETE':
 
         event_id = request.args.get('eventId')
-        event = EventService.delete_event(event_id)
+        result = EventService.delete_event(event_id)
 
-        if not event:
-            return 'Not found', status.HTTP_404_NOT_FOUND
+        if not result:
+            return jsonify(result), status.HTTP_404_NOT_FOUND
         else:
-            return 'Deleted', status.HTTP_200_OK
+            return jsonify(result), status.HTTP_200_OK
 
 
 @app.route('/event/available-events', methods=['GET'], strict_slashes=False)
@@ -73,10 +73,10 @@ def user_event_endpoint():
         result = EventService.add_user_to_event(user_id, payload['eventId'])
 
         if result == -1:
-            return 'Not found', status.HTTP_404_NOT_FOUND
+            return jsonify(result), status.HTTP_404_NOT_FOUND
 
         elif result == -2:
-            return 'Time frame taken by another event', status.HTTP_409_CONFLICT
+            return jsonify(result), status.HTTP_409_CONFLICT
 
         else:
             return jsonify(result), status.HTTP_200_OK
@@ -89,6 +89,6 @@ def user_event_endpoint():
         result = EventService.leave_event(event_id=event_id, user_id=user_id)
 
         if not result:
-            return 'Not found', status.HTTP_404_NOT_FOUND
+            return jsonify(result), status.HTTP_404_NOT_FOUND
         else:
             return jsonify(result), status.HTTP_200_OK
