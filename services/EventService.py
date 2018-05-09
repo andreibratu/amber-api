@@ -52,8 +52,7 @@ class EventService:
                                                           event_lat=event.place.lat, event_lng=event.place.lng)
                 event.dist = dist
                 event.eta = eta
-            events = sorted(events, key=(lambda event1, event2: event1.busytime.start < event2.busytime.start))
-            return events
+            return sorted(events, key=(lambda ev: ev.busytime.start))
 
     @staticmethod
     def add_user_to_event(user_id, event_id):
@@ -87,7 +86,7 @@ class EventService:
             event.dist = dist
             event.eta = eta
 
-        return events
+        return sorted(events, key=(lambda ev: ev.place.start))
 
     @staticmethod
     def leave_event(event_id, user_id):
@@ -111,4 +110,3 @@ class EventService:
             db.session.delete(event)
             db.session.commit()
             return True
-
