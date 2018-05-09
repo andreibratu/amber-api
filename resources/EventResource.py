@@ -7,7 +7,7 @@ from app import app
 from services.EventService import EventService
 
 
-@app.route('/event', methods=['POST', 'GET'], strict_slashes=False)
+@app.route('/event', methods=['POST', 'GET', 'DELETE'], strict_slashes=False)
 @jwt_required()
 def event_endpoint():
     if request.method == 'POST':
@@ -26,13 +26,23 @@ def event_endpoint():
 
     if request.method == 'GET':
 
-        event_id = request.args.get('event_id')
+        event_id = request.args.get('eventId')
         events = EventService.get_event_by_id(event_id)
 
         if not events:
             return 'Not found', status.HTTP_404_NOT_FOUND
         else:
             return jsonify(events), status.HTTP_200_OK
+
+    if request.method == 'DELETE':
+
+        event_id = request.args.get('eventId')
+        event = EventService.delete_event(event_id)
+
+        if not event:
+            return 'Not found', status.HTTP_404_NOT_FOUND
+        else:
+            return 'Deleted', status.HTTP_200_OK
 
 
 @app.route('/event/available-events', methods=['GET'], strict_slashes=False)

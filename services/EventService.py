@@ -50,6 +50,7 @@ class EventService:
                                                           event_lat=event.place.lat, event_lng=event.place.lng)
                 event.dist = dist
                 event.eta = eta
+            events = sorted(events, key=(lambda event1, event2: event1.busytime.start < event2.busytime.start))
             return events
 
     @staticmethod
@@ -97,4 +98,15 @@ class EventService:
             event.users = [user for user in event.users if user.id != user_id]
             db.session.commit()
             return event
+
+    @staticmethod
+    def delete_event(event_id):
+        event = Event.query.get(event_id)
+
+        if not event:
+            return False
+        else:
+            db.session.delete(event)
+            db.session.commit()
+            return True
 
