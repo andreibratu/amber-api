@@ -17,6 +17,8 @@ class EventService:
         start = string_to_timestamp(busytime['startDate'], busytime['startTime'])
         end = string_to_timestamp(busytime['endDate'], busytime['endTime'])
 
+        print('Debugging BUSYTIME: ', start, end)
+
         if BusyTimeService.is_time_period_available(user_id, start, end):
             busytime = BusyTime(start=start, end=end)
             place = Place(name=place['name'], address=place['address'], lat=place['lat'],
