@@ -51,5 +51,6 @@ class Encoder(JSONEncoder):
                 'address': o.address,
                 'lat': o.lat,
                 'lng': o.lng,
+                'type': o.type,
                 'thumbnail': o.thumbnail
             }
